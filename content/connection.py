@@ -8,8 +8,8 @@ import json
 
 api_key = os.environ['API_KEY']
 def content(input, date_from):
-    endpoint = input
-    url = f"http://content.guardianapis.com/search?q={endpoint}&api-key={api_key}"
+    from_date = date_from
+    url = f"http://content.guardianapis.com/search?q={input}/{input}&from-date={from_date}&api-key={api_key}"
     response = requests.get(url)
     data = response.json()
 
