@@ -11,13 +11,17 @@ load_dotenv()
 
 api_key = os.environ['API_KEY']
 
-def content(input, date_from=None, date_to=None):
+def content(input, date_from=None, date_to=None, broker_id="guardian_content"):
     """
     :param input: the desired search term
     :param date_from: optional date from which the articles are retrieved.
     :param date_from: optional date to which the articles are retrieved.
     :return: List of articles with their webPublicationDate, webTitle and webUrl in JSON format.
     """
+    if not api_key:
+        print("API_KEY not found")
+        return []
+
     params = {
         "q": input,
         "from-date": date_from,
@@ -39,16 +43,16 @@ def content(input, date_from=None, date_to=None):
 
     formatted_articles = []
     for article in articles:
+        body = article.get("fields", {}).get("body", "")
+        preview = body[:1000] if body else ""
         formatted = {
             "webPublicationDate": article["webPublicationDate"],
             "webTitle": article["webTitle"],
-            "webUrl": article["webUrl"]
+            "webUrl": article["webUrl"],
+            "content_preview": preview
         }
         formatted_articles.append(formatted)
-
-    for article in formatted_articles:
-        print(json.dumps(article))
     
     return formatted_articles  
 
-content("machine learning")
+print(content("machine learning"))

@@ -14,7 +14,8 @@ class TestContentFunction(unittest.TestCase):
         self.sample_article = {
             "webPublicationDate": "2023-01-01T12:00:00Z",
             "webTitle": "Sample Title",
-            "webUrl": "https://www.theguardian.com/sample-article"
+            "webUrl": "https://www.theguardian.com/sample-article",
+            "content_preview": ""
         }
 
     @patch.dict(os.environ, {'API_KEY': 'fake-key'})
