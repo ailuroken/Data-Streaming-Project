@@ -11,19 +11,19 @@ load_dotenv()
 
 api_key = os.environ['API_KEY']
 
-def content(input, date_from=None, date_to=None, broker_id="guardian_content"):
+def content(search_term, date_from=None, date_to=None, broker_id="guardian_content"):
     """
-    :param input: the desired search term
+    :param search_term: the desired search term
     :param date_from: optional date from which the articles are retrieved.
     :param date_from: optional date to which the articles are retrieved.
-    :return: List of articles with their webPublicationDate, webTitle and webUrl in JSON format.
+    :return: List of articles with their webPublicationDate, webTitle, webUrl and a 1000 character content preview in JSON format.
     """
     if not api_key:
         print("API_KEY not found")
         return []
 
     params = {
-        "q": input,
+        "q": search_term,
         "from-date": date_from,
         "to-date": date_to,
         "order-by": "newest",
