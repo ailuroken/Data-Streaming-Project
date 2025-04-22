@@ -2,3 +2,12 @@ venv
 .env
 __pycache__
 .pytest_cache
+# Terraform lock file
+**/.terraform.lock.hcl
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
