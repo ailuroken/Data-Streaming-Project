@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "eu-west-2"
-}
-
 resource "aws_sqs_queue" "guardian_content_dlq" {
   name                      = "guardian_content_dlq"
   message_retention_seconds = 1209600 # 14 days for DLQ
