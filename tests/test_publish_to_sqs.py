@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import json
 from botocore.exceptions import BotoCoreError, ClientError
-from content.sqs_publisher import publish_to_sqs
+from src.sqs_publisher import publish_to_sqs
 
 
 class TestPublishToSQS(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestPublishToSQS(unittest.TestCase):
             }
         ]
 
-    @patch("content.sqs_publisher.boto3.client")
+    @patch("src.sqs_publisher.boto3.client")
     def test_publish_successfully(self, mock_boto_client):
         mock_sqs = MagicMock()
         mock_boto_client.return_value = mock_sqs
@@ -31,19 +31,19 @@ class TestPublishToSQS(unittest.TestCase):
         self.assertEqual(kwargs['QueueUrl'], 'https://dummy-queue-url')
         self.assertEqual(json.loads(kwargs['MessageBody']), self.sample_articles[0])
 
-    @patch("content.sqs_publisher.boto3.client")
+    @patch("src.sqs_publisher.boto3.client")
     def test_publish_with_empty_article_list(self, mock_boto_client):
         publish_to_sqs([], broker_id="guardian_content")
         mock_boto_client.assert_called_once()
 
-    @patch("content.sqs_publisher.boto3.client", side_effect=BotoCoreError())
+    @patch("src.sqs_publisher.boto3.client", side_effect=BotoCoreError())
     def test_boto_client_failure(self, mock_boto_client):
         try:
             publish_to_sqs(self.sample_articles)
         except Exception as e:
             self.fail(f"Function raised an unexpected exception: {e}")
 
-    @patch("content.sqs_publisher.boto3.client")
+    @patch("src.sqs_publisher.boto3.client")
     def test_queue_url_failure(self, mock_boto_client):
         mock_sqs = MagicMock()
         mock_sqs.get_queue_url.side_effect = ClientError(
@@ -57,7 +57,7 @@ class TestPublishToSQS(unittest.TestCase):
         except Exception as e:
             self.fail(f"Function raised an unexpected exception: {e}")
 
-    @patch("content.sqs_publisher.boto3.client")
+    @patch("src.sqs_publisher.boto3.client")
     def test_send_message_failure(self, mock_boto_client):
         mock_sqs = MagicMock()
         mock_sqs.get_queue_url.return_value = {'QueueUrl': 'https://dummy-queue-url'}

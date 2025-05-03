@@ -2,6 +2,7 @@ venv
 .env
 __pycache__
 .pytest_cache
+python/
 # Terraform lock file
 **/.terraform.lock.hcl
 

@@ -1,23 +1,22 @@
-"""
-This script retrieves the 10 latest articles that are relevent to the input from the Guardian API.
-"""
-
-from dotenv import load_dotenv
 import os
 import requests
 import json
+import boto3
+from botocore.exceptions import ClientError
 
-load_dotenv()
+def get_api_key():
+    try:
+        secret = boto3.client("secretsmanager").get_secret_value(SecretId="guardianApiKey")
+        return json.loads(secret["SecretString"])["API_KEY"]
+    except ClientError as e:
+        print(f"Error retrieving secret: {e}")
+        return None
+    except KeyError as e:
+        print(f"API key missing in secret: {e}")
+        return None
 
-api_key = os.environ['API_KEY']
-
-def content(search_term, date_from=None, date_to=None, broker_id="guardian_content"):
-    """
-    :param search_term: the desired search term
-    :param date_from: optional date from which the articles are retrieved.
-    :param date_from: optional date to which the articles are retrieved.
-    :return: List of articles with their webPublicationDate, webTitle, webUrl and a 1000 character content preview in JSON format.
-    """
+def fetch_content(search_term, date_from=None, date_to=None, broker_id="guardian_content"):
+    api_key = get_api_key()
     if not api_key:
         print("API_KEY not found")
         return []
@@ -53,6 +52,4 @@ def content(search_term, date_from=None, date_to=None, broker_id="guardian_conte
         }
         formatted_articles.append(formatted)
     
-    return formatted_articles  
-
-print(content("machine learning"))
+    return formatted_articles
