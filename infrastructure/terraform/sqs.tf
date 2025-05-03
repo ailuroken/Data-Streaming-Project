@@ -20,6 +20,13 @@ resource "aws_sqs_queue" "guardian_content" {
   }
 }
 
+resource "aws_lambda_event_source_mapping" "publisher_trigger" {
+  event_source_arn  = aws_sqs_queue.guardian_content.arn
+  function_name     = aws_lambda_function.publisher_lambda.arn
+  batch_size        = 10
+  enabled           = true
+}
+
 output "guardian_content_queue_url" {
   value = aws_sqs_queue.guardian_content.id
 }
