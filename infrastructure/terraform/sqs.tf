@@ -50,3 +50,28 @@ data "aws_iam_policy_document" "sqs_access" {
     ]
   }
 }
+
+resource "aws_iam_policy" "lambda_sqs_policy" {
+  name        = "LambdaSQSSendReceivePolicy"
+  description = "Policy to allow Lambda to receive and delete messages from SQS"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:sqs:eu-west-2:109264794038:guardian_content"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_sqs_policy_attachment" {
+  policy_arn = aws_iam_policy.lambda_sqs_policy.arn
+  role       = aws_iam_role.publisher_lambda_role.name
+}

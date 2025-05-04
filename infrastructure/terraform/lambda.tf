@@ -18,7 +18,7 @@ data "archive_file" "fetch_content_lambda" {
 data "archive_file" "requests_layer" {
   type             = "zip"
   output_file_mode = "0666"
-  source_dir  = "${path.module}/../../layer/python"
+  source_dir       = "${path.module}/../../layer/python"
   output_path      = "${path.module}/../../packages/guardian_content/requests_layer.zip"
 }
 
@@ -53,7 +53,7 @@ resource "aws_lambda_function" "fetch_content_lambda" {
 # ========
 
 # SQS Publisher lambda code
-data "archive_file" "publisher_lambda" {
+data "archive_file" "publisher_lambda_code" {
   type             = "zip"
   output_file_mode = "0666"
   source_file      = "${path.module}/../../src/sqs_publisher.py"

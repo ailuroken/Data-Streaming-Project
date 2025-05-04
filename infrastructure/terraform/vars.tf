@@ -1,11 +1,11 @@
 variable "code_bucket_prefix" {
   type    = string
-  default = "guardian_content_code"
+  default = "guardian-content-code"
 }
 
 variable "publisher_code_bucket_prefix" {
   type    = string
-  default = "publisher_code"
+  default = "publisher-code"
 }
 
 variable "lambda_fetch_content" {

@@ -51,7 +51,7 @@ resource "aws_s3_object" "requests_layer" {
 
 # SQS publisher lambda code
 resource "aws_s3_object" "publisher_lambda_code" {
-  bucket = aws_s3_bucket.code_bucket.bucket
+  bucket = aws_s3_bucket.publisher_code_bucket.bucket
   key    = "publisher_lambda/publisher_lambda.zip"
-  source = data.archive_file.publisher_lambda.output_path
+  source = data.archive_file.publisher_lambda_code.output_path
 }
