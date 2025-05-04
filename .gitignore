@@ -11,3 +11,7 @@ python/
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+packages/
+**/*.zip
+layer/
