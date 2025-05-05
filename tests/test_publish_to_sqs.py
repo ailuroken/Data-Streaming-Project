@@ -13,7 +13,7 @@ class TestPublishToSQS(unittest.TestCase):
                 "webPublicationDate": "2025-04-18T09:00:05Z",
                 "webTitle": "Sample Title",
                 "webUrl": "https://example.com/article",
-                "content_preview": "Preview preview preview"
+                "content_preview": "Preview preview preview",
             }
         ]
 
@@ -21,15 +21,15 @@ class TestPublishToSQS(unittest.TestCase):
     def test_publish_successfully(self, mock_boto_client):
         mock_sqs = MagicMock()
         mock_boto_client.return_value = mock_sqs
-        mock_sqs.get_queue_url.return_value = {'QueueUrl': 'https://dummy-queue-url'}
+        mock_sqs.get_queue_url.return_value = {"QueueUrl": "https://dummy-queue-url"}
 
         publish_to_sqs(self.sample_articles, broker_id="guardian_content")
 
         mock_sqs.get_queue_url.assert_called_once_with(QueueName="guardian_content")
         mock_sqs.send_message.assert_called_once()
         args, kwargs = mock_sqs.send_message.call_args
-        self.assertEqual(kwargs['QueueUrl'], 'https://dummy-queue-url')
-        self.assertEqual(json.loads(kwargs['MessageBody']), self.sample_articles[0])
+        self.assertEqual(kwargs["QueueUrl"], "https://dummy-queue-url")
+        self.assertEqual(json.loads(kwargs["MessageBody"]), self.sample_articles[0])
 
     @patch("src.sqs_publisher.boto3.client")
     def test_publish_with_empty_article_list(self, mock_boto_client):
@@ -47,8 +47,10 @@ class TestPublishToSQS(unittest.TestCase):
     def test_queue_url_failure(self, mock_boto_client):
         mock_sqs = MagicMock()
         mock_sqs.get_queue_url.side_effect = ClientError(
-            error_response={'Error': {'Code': 'AWS.SimpleQueueService.NonExistentQueue'}},
-            operation_name='GetQueueUrl'
+            error_response={
+                "Error": {"Code": "AWS.SimpleQueueService.NonExistentQueue"}
+            },
+            operation_name="GetQueueUrl",
         )
         mock_boto_client.return_value = mock_sqs
 
@@ -60,10 +62,12 @@ class TestPublishToSQS(unittest.TestCase):
     @patch("src.sqs_publisher.boto3.client")
     def test_send_message_failure(self, mock_boto_client):
         mock_sqs = MagicMock()
-        mock_sqs.get_queue_url.return_value = {'QueueUrl': 'https://dummy-queue-url'}
+        mock_sqs.get_queue_url.return_value = {"QueueUrl": "https://dummy-queue-url"}
         mock_sqs.send_message.side_effect = ClientError(
-            error_response={'Error': {'Code': 'InternalError', 'Message': 'Something broke'}},
-            operation_name='SendMessage'
+            error_response={
+                "Error": {"Code": "InternalError", "Message": "Something broke"}
+            },
+            operation_name="SendMessage",
         )
         mock_boto_client.return_value = mock_sqs
 
