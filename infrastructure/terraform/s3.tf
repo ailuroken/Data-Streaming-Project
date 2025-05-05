@@ -39,6 +39,7 @@ resource "aws_s3_object" "requests_layer" {
   bucket = aws_s3_bucket.code_bucket.bucket
   key    = "requests_layer.zip"
   source = data.archive_file.requests_layer.output_path
+  etag   = filemd5(data.archive_file.requests_layer.output_path)
 }
 
 # ==========================================

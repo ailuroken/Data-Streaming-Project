@@ -10,15 +10,15 @@
 data "archive_file" "fetch_content_lambda" {
   type             = "zip"
   output_file_mode = "0666"
-  source_file      = "${path.module}/../../src/guardian_content.py"
+  source_dir      = "${path.module}/../../src"
   output_path      = "${path.module}/../../packages/guardian_content/guardian_content.zip"
 }
 
-# Fetch content layer dependency
+# # Fetch content layer dependency
 data "archive_file" "requests_layer" {
   type             = "zip"
   output_file_mode = "0666"
-  source_dir       = "${path.module}/../../layer/python"
+  source_dir      = "${path.module}/../../layer/python"
   output_path      = "${path.module}/../../packages/guardian_content/requests_layer.zip"
 }
 
@@ -26,7 +26,7 @@ data "archive_file" "requests_layer" {
 # CREATE
 # ========
 
-# Fetch content layer dependencies
+# Requests layer
 resource "aws_lambda_layer_version" "requests_layer" {
   layer_name          = "requests"
   compatible_runtimes = [var.python_runtime]
@@ -34,6 +34,7 @@ resource "aws_lambda_layer_version" "requests_layer" {
   s3_key              = aws_s3_object.requests_layer.key
 }
 
+# Fetch code lambda
 resource "aws_lambda_function" "fetch_content_lambda" {
   function_name = var.lambda_fetch_content
   s3_bucket     = aws_s3_bucket.code_bucket.bucket
@@ -41,6 +42,7 @@ resource "aws_lambda_function" "fetch_content_lambda" {
   role          = aws_iam_role.guardian_content_lambda_role.arn
   handler       = "guardian_content.lambda_handler"
   runtime       = var.python_runtime
+  depends_on = [aws_lambda_layer_version.requests_layer]
   layers        = [aws_lambda_layer_version.requests_layer.arn]
 }
 
@@ -64,6 +66,7 @@ data "archive_file" "publisher_lambda_code" {
 # CREATE
 # ========
 
+# SQS publisher lambda function
 resource "aws_lambda_function" "publisher_lambda" {
   function_name = var.lambda_publisher
   s3_bucket     = aws_s3_bucket.publisher_code_bucket.bucket

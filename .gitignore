@@ -1,7 +1,7 @@
 venv
 __pycache__
 .pytest_cache
-python/
+layer/
 # Terraform lock file
 **/.terraform.lock.hcl
 
@@ -14,4 +14,3 @@ python/
 
 packages/
 **/*.zip
-layer/
