@@ -34,7 +34,7 @@ resource "aws_lambda_layer_version" "requests_layer" {
   s3_key              = aws_s3_object.requests_layer.key
 }
 
-# Fetch code lambda
+# Fetch code lambda function
 resource "aws_lambda_function" "fetch_content_lambda" {
   function_name = var.lambda_fetch_content
   s3_bucket     = aws_s3_bucket.code_bucket.bucket
@@ -46,9 +46,9 @@ resource "aws_lambda_function" "fetch_content_lambda" {
   layers        = [aws_lambda_layer_version.requests_layer.arn]
 }
 
-# ==========================================
+# =======================
 # SQS Publisher Lambda
-# ==========================================
+# =======================
 
 # ========
 # DEFINE
