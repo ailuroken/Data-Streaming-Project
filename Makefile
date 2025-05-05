@@ -88,9 +88,8 @@ iac-check:
 ## Run all checks
 run-checks: security-test run-black unit-tests iac-check
 
-# ============================
+################################################################################################################
 # Lambda Layer Packaging
-# ============================
 
 ## Clean and create requests layer zip
 build-requests-layer:
