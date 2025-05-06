@@ -3,7 +3,7 @@ import requests
 import json
 import boto3
 from botocore.exceptions import ClientError
-from sqs_publisher import publish_to_sqs
+from src.sqs_publisher import publish_to_sqs
 
 
 def get_api_key():
