@@ -74,7 +74,7 @@ run-black:
 
 ## Run unit tests
 unit-tests:
-	$(call execute_in_env, PYTHONPATH=$(PYTHONPATH) pytest --vvvrP)
+	$(call execute_in_env, PYTHONPATH=$(PYTHONPATH) pytest -v)
 
 ## Check Terraform/IaC code for security issues
 iac-check:
