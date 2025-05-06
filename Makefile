@@ -78,7 +78,7 @@ unit-tests:
 
 ## Check Terraform/IaC code for security issues
 iac-check:
-	$(call execute_in_env, checkov -d ./infra)
+	$(call execute_in_env, checkov -d ./infrastructure)
 
 ## Run all checks
 run-checks: security-test run-black unit-tests iac-check
