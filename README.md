@@ -1,6 +1,6 @@
 # Data Streaming Project
 
-A serverless data pipeline that fetches articles from the Guardian API, processes them, and publishes to an SQS queue using AWS Lambda and Terraform.
+A serverless data pipeline that fetches articles from the Guardian API, processes them, and publishes to an SQS queue using AWS Lambda and Terraform. Only the free tier API key provided by the Guardian is needed. The application is written in python and the articles are published in JSon format. 
 
 [The Guardian documentation](https://open-platform.theguardian.com/documentation/)
 ---
