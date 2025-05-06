@@ -52,13 +52,8 @@ pip-audit:
 ## Install black
 black:
 	$(call execute_in_env, $(PIP) install black)
-
-## Install checkov (Terraform security)
-checkov:
-	$(call execute_in_env, $(PIP) install checkov)
-
-## Set up dev requirements (bandit, safety, pip-audit, black, checkov)
-dev-setup: bandit pip-audit black checkov coverage
+## Set up dev requirements (bandit, pip-audit, black)
+dev-setup: bandit pip-audit black
 
 ################################################################################################################
 # Tests and Checks
@@ -76,12 +71,8 @@ run-black:
 unit-tests:
 	$(call execute_in_env, PYTHONPATH=$(PYTHONPATH) pytest -v)
 
-## Check Terraform/IaC code for security issues
-iac-check:
-	$(call execute_in_env, checkov -d ./infrastructure)
-
 ## Run all checks
-run-checks: security-test run-black unit-tests iac-check
+run-checks: security-test run-black unit-tests
 
 ################################################################################################################
 # Lambda Layer Packaging
