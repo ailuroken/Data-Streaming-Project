@@ -45,10 +45,6 @@ requirements: create-environment
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
 
-## Install safety
-safety:
-	$(call execute_in_env, $(PIP) install safety)
-
 ## Install pip-audit
 pip-audit:
 	$(call execute_in_env, $(PIP) install pip-audit)
@@ -62,14 +58,13 @@ checkov:
 	$(call execute_in_env, $(PIP) install checkov)
 
 ## Set up dev requirements (bandit, safety, pip-audit, black, checkov)
-dev-setup: bandit safety pip-audit black checkov coverage
+dev-setup: bandit pip-audit black checkov coverage
 
 ################################################################################################################
 # Tests and Checks
 
 ## Run security checks
 security-test:
-	$(call execute_in_env, safety check -r ./requirements.txt)
 	$(call execute_in_env, pip-audit -r ./requirements.txt)
 	$(call execute_in_env, bandit -lll -r ./src)
 
