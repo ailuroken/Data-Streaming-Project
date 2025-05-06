@@ -51,39 +51,32 @@ jobs:
           cp -r venv/lib/python3.12/site-packages/* python/
           zip -r requests_layer.zip python
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: requests_layer
-          path: requests_layer.zip
+  # deploy-lambda:
+  #   name: deploy-lambda
+  #   runs-on: ubuntu-latest
+  #   environment: development
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-  deploy-lambda:
-    name: deploy-lambda
-    runs-on: ubuntu-latest
-    needs: upload-layer
-    environment: development
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+  #     - name: Terraform Setup
+  #       uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v3
+  #     - name: Terraform Init
+  #       working-directory: terraform
+  #       run: terraform init
 
-      - name: Terraform Init
-        working-directory: terraform
-        run: terraform init
+  #     - name: Terraform Plan
+  #       working-directory: terraform
+  #       run: terraform plan
 
-      - name: Terraform Plan
-        working-directory: terraform
-        run: terraform plan
-
-      - name: Terraform Apply
-        working-directory: terraform
-        run: terraform apply -auto-approve
+  #     - name: Terraform Apply
+  #       working-directory: terraform
+  #       run: terraform apply -auto-approve

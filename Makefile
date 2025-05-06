@@ -75,7 +75,7 @@ security-test:
 
 ## Format code using black
 run-black:
-	$(call execute_in_env, black ./src ./test)
+	$(call execute_in_env, black ./src ./tests)
 
 ## Run unit tests
 unit-tests:
