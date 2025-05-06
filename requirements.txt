@@ -1,6 +1,6 @@
 requests==2.32.3
 pytest==8.3.5
-boto3=1.38.7
+boto3==1.38.7
 botocore1.38.7
 black==25.1.0
 safety==3.2.4
